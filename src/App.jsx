@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 function App() {
+  // État pour stocker les données du formulaire
   const [formData, setFormData] = useState({
     nom: "",
     prenom: "",
@@ -11,9 +12,12 @@ function App() {
     contact: false,
   });
 
+  // État pour stocker les erreurs de validation
   const [errors, setErrors] = useState({});
+  // État pour stocker les messages de confirmation ou d'erreur
   const [message, setMessage] = useState("");
 
+  // Fonction pour gérer les changements dans les champs du formulaire
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
@@ -22,6 +26,7 @@ function App() {
     }));
   };
 
+  // Fonction pour valider les données du formulaire
   const validate = () => {
     const newErrors = {};
     if (!formData.nom) newErrors.nom = "Nom est requis";
@@ -32,14 +37,18 @@ function App() {
     if (!formData.souhait) newErrors.souhait = "Choisissez une option";
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return Object.keys(newErrors).length === 0; // Retourne true si aucune erreur n'est trouvée
   };
 
+  // Fonction pour gérer la soumission du formulaire
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Empêche le comportement par défaut du formulaire
+
+    // Valide les données avant l'envoi
     if (!validate()) return;
 
     try {
+      // Envoie des données au serveur
       const response = await fetch("http://localhost:8888/landing-test/submit_form.php", {
         method: "POST",
         headers: {
@@ -50,6 +59,7 @@ function App() {
 
       const result = await response.json();
       if (result.success) {
+        // Affiche un message de succès et réinitialise le formulaire
         alert("Votre demande a été envoyée avec succès !");
         setFormData({
           nom: "",
@@ -62,15 +72,18 @@ function App() {
         });
         setErrors({});
       } else {
+        // Affiche un message d'erreur
         setMessage("Une erreur s'est produite. Veuillez réessayer.");
       }
     } catch (error) {
+      // Affiche un message d'erreur en cas d'exception
       setMessage("Une erreur s'est produite. Veuillez réessayer.");
     }
   };
 
   return (
     <div className="landing-page">
+      {/* En-tête du site */}
       <header>
         <div className="header-left">
           <img src="images/Logo Coeur des Çcrins.svg" alt="Logo Cœur des Écrins" />
@@ -88,6 +101,7 @@ function App() {
         </div>
       </header>
 
+      {/* Contenu principal */}
       <div className="content">
         <div className="left-side">
           <div className="wrapper">
@@ -128,6 +142,7 @@ function App() {
         </div>
 
         <div className="right-side">
+          {/* Formulaire de contact */}
           <div className="contact-form">
             <h2>CONTACTEZ-NOUS DÈS MAINTENANT !</h2>
             <form onSubmit={handleSubmit}>
@@ -242,6 +257,7 @@ function App() {
               Conception : Adjectif
             </p>
           </div>
+          {/* Message de confirmation ou d'erreur */}
           {message && <p className="confirmation-message">{message}</p>}
         </div>
       </div>
