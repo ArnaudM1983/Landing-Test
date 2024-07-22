@@ -53,6 +53,5 @@ Cette application est une landing page développée en React pour la promotion d
 - `src/`: Contient le code source React.
   - `App.jsx`: Composant principal de l'application.
   - `index.jsx`: Point d'entrée de l'application React.
-- `public/`: Contient les fichiers statiques.
 - `submit_form.php`: Script PHP pour traiter et envoyer les données du formulaire.
 
